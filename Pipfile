@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 flask = "*"
+flask-smorest = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
