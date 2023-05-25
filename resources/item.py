@@ -4,7 +4,6 @@ from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 
-from common.db import stores, items
 from common.schemas import ItemSchema, ItemUpdateSchema
 
 blp = Blueprint("items", __name__, description="Operation on items")
