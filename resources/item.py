@@ -16,33 +16,54 @@ blp = Blueprint("items", __name__, description="Operation on items")
 class Item(MethodView):
     @blp.response(200, ItemSchema)
     def get(self, item_id):
-        try:
-            return items[item_id]
-        except KeyError:
-            abort(404, message="Item not found")
+        # try:
+        #     return items[item_id]
+        # except KeyError:
+        #     abort(404, message="Item not found")
+
+        item = ItemModel.query.get_or_404(item_id)
+        return item
 
     def delete(self, item_id):
-        try:
-            del items[item_id]
-            return {"message": "Item deleted"}
-        except KeyError:
-            abort(404, message="Item not found")
+        # try:
+        #     del items[item_id]
+        #     return {"message": "Item deleted"}
+        # except KeyError:
+        #     abort(404, message="Item not found")
+
+        item = ItemModel.query.get_or_404(item_id)
+        db.session.delete(item)
+        db.session.commit()
+
+        return {"message": "Item deleted."}
 
     @blp.arguments(ItemUpdateSchema)
     @blp.response(200, ItemSchema)
     def put(self, item_data, item_id):
+        '''
+        Using default request object from flask
+        '''
         # item_data = request.get_json()
         # if "price" not in item_data or "name" not in item_data:
         #     abort(
         #         400, message="Bad request. Ensure 'price' and 'name' are included in the JSON payload")
 
-        try:
-            item = items[item_id]
-            item |= item_data
+        # try:
+        #     item = items[item_id]
+        #     item |= item_data
 
-            return item
-        except KeyError:
-            abort(404, message="Item not found")
+        #     return item
+        # except KeyError:
+        #     abort(404, message="Item not found")
+
+        item = ItemModel.query.get_or_404(item_id)
+        item.name = item_data["name"]
+        item.price = item_data["price"]
+
+        db.session.add(item)
+        db.session.commit()
+
+        return item
 
 
 @blp.route("/item")
@@ -53,7 +74,9 @@ class ItemList(MethodView):
         #     "items": list(items.values())
         # }
 
-        return items.values()
+        # return items.values()
+
+        return ItemModel.query.all()
 
     @blp.arguments(ItemSchema)
     @blp.response(201, ItemSchema)
