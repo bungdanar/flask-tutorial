@@ -25,7 +25,7 @@ class Store(MethodView):
         store = StoreModel.query.get_or_404(store_id)
         return store
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     def delete(self, store_id):
         # try:
         #     del stores[store_id]
