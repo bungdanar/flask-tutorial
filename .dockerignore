@@ -1,0 +1,16 @@
+.git
+Dockerfile
+.DS_Store
+.gitignore
+.dockerignore
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
