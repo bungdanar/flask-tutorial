@@ -33,6 +33,10 @@ class Item(MethodView):
         # except KeyError:
         #     abort(404, message="Item not found")
 
+        # jwt = get_jwt()
+        # if not jwt.get("is_admin"):
+        #     abort(401, message="Admin privilage required")
+
         item = ItemModel.query.get_or_404(item_id)
         db.session.delete(item)
         db.session.commit()
